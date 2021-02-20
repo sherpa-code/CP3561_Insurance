@@ -96,8 +96,7 @@ public class Application_Methods {
         } catch (Exception e) {
             out.println("Error Creating the Table");
             out.println(e.getMessage());
-        }
-        finally {
+        } finally {
             out.println("Table creation completed!");
         }
     }
@@ -142,8 +141,7 @@ public class Application_Methods {
         } catch(Exception e) {
             out.println("Error inserting values into the Table");
             out.println(e.getMessage());
-        }
-        finally {
+        } finally {
             out.println("Insert completed!");
         }
     }
