@@ -6,6 +6,7 @@ import static java.lang.System.out;
 public class Application_Methods {
 
     public static SQL_Methods sql = new SQL_Methods();
+    //public Connection connection;
 
     Application_Methods() {
         try {
@@ -16,7 +17,8 @@ public class Application_Methods {
     }
 
     public void main() throws Exception {
-        //out.println("Application_Methods main"); // DEBUG
+        //connection = getConnection();
+
         dropTables();
         createDatabase();
         insertValuesIntoTables();
@@ -59,10 +61,8 @@ public class Application_Methods {
         Connection connection = getConnection();
         assert connection != null;
 
-        // Get a Statement object.
-        Statement statement = connection.createStatement();
-        try
-        {
+        Statement statement = connection.createStatement(); // Get a Statement object.
+        try {
             //TODO:TRY & CATCH REQUIRED for each statement
 
             // Drop the given table.
@@ -76,10 +76,8 @@ public class Application_Methods {
 
             out.println("All tables dropped");
 
-        } catch (SQLException ex)
-        {
-            // No need to report an error.
-            // The table simply did not exist.
+        } catch (SQLException ex) {
+            out.println("dropTables() failed"); // A table did not exist.
         }
     }
 
@@ -95,7 +93,7 @@ public class Application_Methods {
             PreparedStatement create = connection.prepareStatement(sqlScript);
             create.executeUpdate();
 
-        } catch (Exception e){
+        } catch (Exception e) {
             out.println("Error Creating the Table");
             out.println(e.getMessage());
         }
@@ -109,7 +107,7 @@ public class Application_Methods {
      * @throws Exception
      */
     public void createDatabase() throws Exception {
-        try{
+        try {
             //TODO: try & catch for all statements
             //dropTables();
 
@@ -141,7 +139,7 @@ public class Application_Methods {
             PreparedStatement posted = connection.prepareStatement(sqlScript);
             posted.executeUpdate();
 
-        } catch(Exception e){
+        } catch(Exception e) {
             out.println("Error inserting values into the Table");
             out.println(e.getMessage());
         }
@@ -171,8 +169,8 @@ public class Application_Methods {
      * @param sqlStatement
      * @throws Exception
      */
-    public void getQuery(String sqlStatement) throws Exception{
-        try{
+    public void getQuery(String sqlStatement) throws Exception {
+        try {
             StringBuilder queryResult = new StringBuilder();
 
             Connection connection = getConnection();
@@ -186,7 +184,7 @@ public class Application_Methods {
             for (int i = 1; i < numberOfColumns; i++) {
                 out.printf("%-12s\t", metaData.getColumnName(i));
             }
-            out.println("\n----------------------------------------------------------------");
+            out.println("\n------------------------------------------------------------------------------------------");
             while (result.next()) { // As long as there is another object in the table
                 for (int i = 1; i < numberOfColumns ; i++) {
                     out.printf("%-12s\t", result.getObject(i));
@@ -195,8 +193,8 @@ public class Application_Methods {
             }
             connection.close();
 
-        }catch(Exception e){
-            out.println("Error creating querry out of the Table");
+        } catch(Exception e) {
+            out.println("Error creating query out of the Table");
             out.println(e.getMessage());
         }
     }
