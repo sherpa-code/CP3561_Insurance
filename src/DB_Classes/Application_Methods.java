@@ -6,7 +6,7 @@ import static java.lang.System.out;
 public class Application_Methods {
 
     public static SQL_Methods sql = new SQL_Methods();
-    //public Connection connection;
+    public Connection connection;
 
     Application_Methods() {
         try {
@@ -18,6 +18,7 @@ public class Application_Methods {
 
     public void main() throws Exception {
         //connection = getConnection();
+        connection = getConnection();
 
         dropTables();
         createDatabase();
@@ -45,7 +46,7 @@ public class Application_Methods {
             out.println("Successfully Connected!");
             return connection;
 
-        } catch (Exception e){
+        } catch (Exception e) {
             out.println("Error Creating the Database");
             out.println(e.getMessage());
             return null;
@@ -58,7 +59,7 @@ public class Application_Methods {
      * @throws Exception
      */
     public void dropTables() throws Exception {
-        Connection connection = getConnection();
+        out.println("Attempting to dropTables()...");
         assert connection != null;
 
         Statement statement = connection.createStatement(); // Get a Statement object.
@@ -74,10 +75,10 @@ public class Application_Methods {
             statement.execute("DROP TABLE SMJ_Car");
             statement.execute("DROP TABLE SMJ_Client");
 
-            out.println("All tables dropped");
+            out.println("   All tables dropped");
 
         } catch (SQLException ex) {
-            out.println("dropTables() failed"); // A table did not exist.
+            out.println("   dropTables() failed"); // A table did not exist.
         }
     }
 
@@ -88,16 +89,15 @@ public class Application_Methods {
      */
     public void createTable(String sqlScript) throws Exception {
         try {
-            Connection connection = getConnection();
             assert connection != null;
             PreparedStatement create = connection.prepareStatement(sqlScript);
             create.executeUpdate();
 
         } catch (Exception e) {
-            out.println("Error Creating the Table");
+            out.println("   Error Creating the Table");
             out.println(e.getMessage());
         } finally {
-            out.println("Table creation completed!");
+            out.println("   Table creation completed!");
         }
     }
 
@@ -108,17 +108,22 @@ public class Application_Methods {
     public void createDatabase() throws Exception {
         try {
             //TODO: try & catch for all statements
-            //dropTables();
-
+            out.println("Attempting to create table SMJ_Client...");
             createTable(sql.SMJ_Client);
+            out.println("Attempting to create table SMJ_Car...");
             createTable(sql.SMJ_Car);
+            out.println("Attempting to create table SMJ_QuoteCar...");
             createTable(sql.SMJ_QuoteCar);
+            out.println("Attempting to create table SMJ_AutoPolicy...");
             createTable(sql.SMJ_AutoPolicy);
+            out.println("Attempting to create table SMJ_Property...");
             createTable(sql.SMJ_Property);
+            out.println("Attempting to create table SMJ_QuoteProperty...");
             createTable(sql.SMJ_QuoteProperty);
+            out.println("Attempting to create table SMJ_PropertyPolicy...");
             createTable(sql.SMJ_PropertyPolicy);
 
-        } catch(Exception e) {
+        } catch (Exception e) {
             out.println("Error Creating the Database");
             out.println(e.getMessage());
         }
@@ -130,19 +135,18 @@ public class Application_Methods {
      * @throws Exception
      */
     public void post(String sqlScript) throws Exception {
-
+        out.println("Attempting to insert value...");
         try {
-            Connection connection = getConnection();
             assert connection != null;
 
             PreparedStatement posted = connection.prepareStatement(sqlScript);
             posted.executeUpdate();
 
-        } catch(Exception e) {
+        } catch (Exception e) {
             out.println("Error inserting values into the Table");
             out.println(e.getMessage());
         } finally {
-            out.println("Insert completed!");
+            out.println("   Insert completed!");
         }
     }
 
@@ -151,8 +155,6 @@ public class Application_Methods {
      * @throws Exception
      */
     public void insertValuesIntoTables() throws Exception {
-        //TODO: try catch for all statements here
-
         post(sql.insValClient);
         post(sql.insValCar);
         post(sql.insValProperty);
@@ -169,9 +171,9 @@ public class Application_Methods {
      */
     public void getQuery(String sqlStatement) throws Exception {
         try {
-            StringBuilder queryResult = new StringBuilder();
+            //StringBuilder queryResult = new StringBuilder();
 
-            Connection connection = getConnection();
+            connection = getConnection();
             assert connection != null;
 
             PreparedStatement statement = connection.prepareStatement(sqlStatement);
@@ -182,19 +184,26 @@ public class Application_Methods {
             for (int i = 1; i < numberOfColumns; i++) {
                 out.printf("%-12s\t", metaData.getColumnName(i));
             }
-            out.println("\n------------------------------------------------------------------------------------------");
+            out.println();
+
+            for (int i = 1; i < numberOfColumns; i++) {
+                out.print("--------------------");
+            }
+            out.println();
+
             while (result.next()) { // As long as there is another object in the table
                 for (int i = 1; i < numberOfColumns ; i++) {
                     out.printf("%-12s\t", result.getObject(i));
                 }
                 out.println();
             }
+            out.println();
+
             connection.close();
 
-        } catch(Exception e) {
+        } catch (Exception e) {
             out.println("Error creating query out of the Table");
             out.println(e.getMessage());
         }
     }
-
 }

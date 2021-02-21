@@ -1,6 +1,5 @@
 package DB_Classes;
 
-
 public class SQL_Methods {
 
     final public static String SMJ_Client =
