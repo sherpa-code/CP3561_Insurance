@@ -3,6 +3,8 @@ package DB_Classes;
 import java.sql.*;
 import static java.lang.System.out;
 
+// TODO: handle unhandled Exceptions
+
 public class Application_Methods {
 
     public static SQL_Methods sql = new SQL_Methods();
@@ -17,7 +19,6 @@ public class Application_Methods {
     }
 
     public void main() throws Exception {
-        //connection = getConnection();
         connection = getConnection();
 
         dropTables();
@@ -51,7 +52,6 @@ public class Application_Methods {
             out.println(e.getMessage());
             return null;
         }
-
     }
 
     /**
