@@ -30,6 +30,8 @@ public class Application_Methods {
         getQuery("select * from SMJ_Property");
         getQuery("select * from SMJ_QuoteCar");
         getQuery("select * from SMJ_AutoPolicy");
+
+        connection.close();
     }
 
     /**
@@ -173,7 +175,7 @@ public class Application_Methods {
         try {
             //StringBuilder queryResult = new StringBuilder();
 
-            connection = getConnection();
+            //connection = getConnection();
             assert connection != null;
 
             PreparedStatement statement = connection.prepareStatement(sqlStatement);
@@ -199,7 +201,7 @@ public class Application_Methods {
             }
             out.println();
 
-            connection.close();
+//            connection.close();
 
         } catch (Exception e) {
             out.println("Error creating query out of the Table");
